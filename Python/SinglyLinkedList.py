@@ -40,6 +40,21 @@ class SinglyLinkedList:
         """
         self.head = Node(data, self.head)
 
+
+    def topFront(self):
+        """ 
+        Return the first element of list
+        Takes O(1) time
+        """
+        return self.head
+
+    def popFront(self):
+        """
+        Remove the first element of list
+        Takes O(1) time
+        """
+        self.head = self.head.next
+
     def append(self, data):
         """
         Insert a new element at the end of the list
@@ -83,6 +98,70 @@ class SinglyLinkedList:
         elif curr:
             prev.next = curr.next
             curr.next = None
+            
+    def topBack(self):
+        """ 
+        Returns the last element of list
+        Takes O(n) time
+        """
+        curr = self.head
+        while curr.next:
+            curr = curr.next
+        return curr.data
+
+    def popBack(self):
+        """ 
+        Removes the last element of list
+        Takes O(n) time
+        """
+        curr = self.head
+        while curr.next.next:
+            curr = curr.next
+        curr.next = None
+    
+
+    def isEmpty(self):
+        """
+        Return true if list is empty otherwise returns false
+        Takes O(1) time
+        """
+        return True if self.head is None else False
+
+    
+    def addBefore(self, key, data):
+        """ 
+        Add an element before given key
+        Takes O(n) time
+        """
+        curr = self.head
+        if key == curr.data:
+            self.prepend(data)
+            return
+        while curr:
+            if curr.next is None:
+                break
+            if curr.next.data == key:
+                node = Node(data, curr.next)
+                curr.next = node
+                break
+            else:
+                curr = curr.next
+        return
+
+    def addAfter(self, key, data):
+        """ 
+        Add an element after given key
+        Takes O(n) time
+        """
+        curr = self.head
+        while curr:
+            if curr.data == key:
+                node = Node(data, curr.next)
+                curr.next = node
+                break
+            else:
+                curr = curr.next
+        return
 
     def reverse(self):
         """  
@@ -116,3 +195,16 @@ if __name__=='__main__':
     llist.remove(30)
     print(llist)
     print(llist.find('X'))
+    print(llist.topFront())
+    llist.popFront()
+    print(llist)
+    print(llist.topBack())
+    llist.popBack()
+    print(llist)
+    llist.addBefore(40, 20)
+    print(llist)
+    llist.addAfter(10, 55)
+    print(llist)
+
+
+
