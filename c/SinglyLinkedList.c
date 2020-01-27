@@ -1,11 +1,11 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 struct Node
 {
     int data;
-    struct Node* next;
+    struct Node *next;
 };
 
 struct Node *head = NULL;
@@ -16,7 +16,6 @@ void printList()
     struct Node *ptr = head;
     printf("\n[ ");
 
-
     while (ptr != NULL)
     {
         printf(" %d ", ptr->data);
@@ -26,8 +25,9 @@ void printList()
     printf(" ]\n");
 }
 
-void insertAtFirst(int data){
-    struct Node *link = (struct Node*) malloc(sizeof(struct Node));
+void insertAtFirst(int data)
+{
+    struct Node *link = (struct Node *)malloc(sizeof(struct Node));
 
     link->data = data;
     link->next = head;
@@ -35,65 +35,176 @@ void insertAtFirst(int data){
     head = link;
 }
 
-struct Node* deleteFirst()
+int topFront()
+{
+    return head->data;
+}
+
+struct Node *deleteFirst()
 {
     struct Node *tempLink = head;
     head = head->next;
     return tempLink;
 }
 
+void pushBack(int data)
+{
+    struct Node *link = (struct Node *)malloc(sizeof(struct Node));
+    link->data = data;
+    link->next = NULL;
+
+    if (head == NULL)
+    {
+        head = link;
+        return;
+    }
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    current->next = link;
+    return;
+}
+
+int topBack()
+{
+    struct Node *current = head;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+    return current->data;
+}
+
+void popBack()
+{
+    struct Node *current = head;
+    while (current->next->next != NULL)
+    {
+        current = current->next;
+    }
+    current->next = NULL;
+    return;
+}
+
 bool isEmpty()
 {
     return head == NULL;
-}  
+}
 
-int length(){
+int length()
+{
     int length = 0;
     struct Node *current;
 
-    for(current = head; current != NULL; current = current->next){
+    for (current = head; current != NULL; current = current->next)
+    {
         length++;
     }
     return length;
 }
 
-struct Node* find(int data){
-    struct Node* current = head;
+void erase(int data){
+    struct Node *current = head;
 
-    if(head == NULL){
+    if (head == NULL)
+    {
+        return;
+    }
+
+    while (current->next->data != data)
+    {
+        if (current->next == NULL)
+        {
+            return;
+        }
+        else
+        {
+            current = current->next;
+        }
+    }
+    current->next = NULL;
+    return;
+}
+
+struct Node *find(int data)
+{
+    struct Node *current = head;
+
+    if (head == NULL)
+    {
         return NULL;
     }
 
-    while(current->data != data){
-        if(current->next == NULL){
+    while (current->data != data)
+    {
+        if (current->next == NULL)
+        {
             return NULL;
-        }else{
+        }
+        else
+        {
             current = current->next;
         }
     }
     return current;
 }
 
-struct Node* delete(int data){
-    struct Node* current = head;
-    struct Node* previous = NULL;
-
-    if(head == NULL){
-        return NULL;
+void addBefore(int key, int data){
+    if (head == NULL)
+    {
+        return;
     }
-    while(current->data != data){
-        if(current->next == NULL){
-            return NULL;
-        }else{
-            previous = current;
+    struct Node *current = head;
+
+    struct Node *link = (struct Node *)malloc(sizeof(struct Node));
+    link->data = data;
+    
+    if(current->data == key){
+        link->next = current;
+        head = link;
+        return;
+    }
+
+    while (current->next->data != key)
+    {
+        if (current->next == NULL)
+        {
+            return;
+        }
+        else
+        {
             current = current->next;
         }
     }
+    
+    link->next = current->next;
+    current->next = link;
+    return;
+    
 }
 
-int main(){
+int main()
+{
     insertAtFirst(10);
     insertAtFirst(20);
     insertAtFirst(30);
+    printList();
+    pushBack(22);
+    pushBack(32);
+    pushBack(52);
+    printList();
+    popBack();
+    popBack();
+    printList();
+    printf("%d\n", topBack());
+    printf("%d\n", topFront());
+    erase(10);
+    printList();
+    addBefore(20, 22);
+    addBefore(30, 33);
+    addBefore(33, 44);
     printList();
 }
