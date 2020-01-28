@@ -114,6 +114,11 @@ void erase(int data){
         return;
     }
 
+    if(current->data == data){
+        head = current->next;
+        return;
+    }
+
     while (current->next->data != data)
     {
         if (current->next == NULL)
@@ -125,7 +130,7 @@ void erase(int data){
             current = current->next;
         }
     }
-    current->next = NULL;
+    current->next = current->next->next;
     return;
 }
 
